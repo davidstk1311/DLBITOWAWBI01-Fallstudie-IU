@@ -8,7 +8,7 @@ public class RegisterRequest {
     public RegisterRequest() {
     }
 
-    public RegisterRequest(String username, String password, Role role) {
+    public RegisterRequest(String username, String password, Roles role) {
         this.username = username;
         this.password = password;
         this.role = role;
