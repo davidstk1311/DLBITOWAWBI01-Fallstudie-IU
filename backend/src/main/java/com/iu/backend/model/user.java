@@ -1,5 +1,6 @@
 package com.iu.backend.model;
 
+import java.util.*;
 import jakarta.persistence.*;
 import javax.annotation.processing.Generated;
 
@@ -8,7 +9,7 @@ import javax.annotation.processing.Generated;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     @Column(unique = true, nullable = false)
     private String username;
     @Column(nullable = false)
