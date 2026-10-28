@@ -60,11 +60,11 @@ public class Task {
         this.description = description;
     }
 
-    public Enum getStatus() {
+    public TaskStatus getStatus() {
         return status;
     }
 
-    public void setStatus(Enum status) {
+    public void setStatus(TaskStatus status) {
         this.status = status;
     }
 

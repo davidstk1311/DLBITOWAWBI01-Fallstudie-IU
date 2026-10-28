@@ -1,5 +1,5 @@
 package com.iu.backend.model;
-
+import java.util.*;
 import jakarta.persistence.*;
 
 @Entity
@@ -7,13 +7,13 @@ import jakarta.persistence.*;
 public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     @Column(unique = true, nullable = false)
     private String title;
     private String description;
     private boolean isArchived;
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
-    public List<Task> tasks;
+    private List<Task> tasks;
 
     public Project() {
     }
@@ -23,6 +23,7 @@ public class Project {
         this.title = title;
         this.description = description;
         this.isArchived = isArchived;
+        this.tasks = new ArrayList<>();
     }
 //Getter und Setter
     public long getId() {
@@ -55,6 +56,14 @@ public class Project {
 
     public void setArchived(boolean archived) {
         isArchived = archived;
+    }
+    
+    public List<Task> getTasks() {
+        return tasks;
+    }
+
+    public void setTasks(List<Task> tasks) {
+        this.tasks = tasks;
     }
 
 }
