@@ -1,5 +1,7 @@
-public enum taskstatus {
-    open,
-    in_progress,
-    completed
+package com.iu.backend.model;
+
+public enum TaskStatus {
+    OPEN,
+    IN_PROGRESS,
+    COMPLETED
 }
