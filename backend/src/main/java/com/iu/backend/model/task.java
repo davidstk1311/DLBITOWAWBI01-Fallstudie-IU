@@ -15,7 +15,7 @@ public class Task {
     private String title;
     private String description;
     @Enumerated(EnumType.STRING)
-    private taskStatus status = taskStatus.OPEN;
+    private TaskStatus status = TaskStatus.OPEN;
     @ManyToOne
     @JoinColumn(name = "project_id", nullable = false)
     private Project project;
@@ -26,7 +26,7 @@ public class Task {
     public Task() {
     }
 
-    public Task(long id, String title, String description, Enum status, Project project, User chosenUser) {
+    public Task(long id, String title, String description, TaskStatus status, Project project, User chosenUser) {
         this.id = id;
         this.title = title;
         this.description = description;

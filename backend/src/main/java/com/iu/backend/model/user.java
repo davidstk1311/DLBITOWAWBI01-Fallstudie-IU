@@ -15,12 +15,12 @@ public class User {
     @Column(nullable = false)
     private String password;
     @Enumerated(EnumType.STRING)
-    private Role role;
+    private Roles role;
 
     public User() {
     }
 
-    public User(long id, String username, String password, Role role) {
+    public User(long id, String username, String password, Roles role) {
         this.id = id;
         this.username = username;
         this.role = role;
@@ -51,11 +51,11 @@ public class User {
         this.password = password;
     }
 
-    public Role getRole() {
+    public Roles getRole() {
         return role;
     }
 
-    public void setRole(Role role) {
+    public void setRole(Roles role) {
         this.role = role;
     }
 
