@@ -38,12 +38,12 @@ public class SecurityConfig {
     //Sicherheitskonfiguration
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.csrf() -> disable()
+        http.csrf(csrf -> csrf.disable())
                .headers(headers -> headers.frameOptions(frame -> frame.disable()))
                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                .authorizeHttpRequests(auth -> auth.requestMatchers("/api/auth/**", "/h2-console/**").permitAll()
-                       .anyRequest().authenticated()
-                    .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class());
+                   .anyRequest().authenticated())
+               .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
       
 
         return http.build();

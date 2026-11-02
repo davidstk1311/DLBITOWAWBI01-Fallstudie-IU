@@ -1,10 +1,10 @@
 package com.iu.backend.service;
 
-import com.iu.backend.config.JwtTokenProvider; 
+import com.iu.backend.safety.JwtTokenProvider; 
 import com.iu.backend.dto.AuthResponse; 
 import com.iu.backend.dto.LoginRequest; 
 import com.iu.backend.dto.RegisterRequest; 
-import com.iu.backend.model.Role; 
+import com.iu.backend.model.Roles; 
 import com.iu.backend.model.User; 
 import com.iu.backend.repository.UserRepository; 
 import org.springframework.security.authentication.AuthenticationManager; 
@@ -34,7 +34,7 @@ public class AuthService {
         User user = new User();
         user.setUsername(registerRequest.getUsername());
         user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
-        user.setRole(Role.USER);
+        user.setRole(Roles.employee_role);
 
         userRepository.save(user);
         return "User registriert.";
@@ -47,6 +47,6 @@ public class AuthService {
                 .orElseThrow(() -> new RuntimeException("Benutzer nicht gefunden"));
         String token = jwtTokenProvider.generateToken(user.getUsername(), user.getRole().name());
         
-        return new AuthResponse(token);
+        return new AuthResponse(token, user.getUsername(), user.getRole().name());
     }
 }

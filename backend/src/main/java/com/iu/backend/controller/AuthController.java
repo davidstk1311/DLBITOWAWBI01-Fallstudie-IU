@@ -3,7 +3,7 @@ package com.iu.backend.controller;
 import com.iu.backend.dto.AuthResponse; import com.iu.backend.dto.LoginRequest; import com.iu.backend.dto.RegisterRequest; import com.iu.backend.service.AuthService; import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController; import org.springframework.web.bind.annotation.\*;
+import org.springframework.web.bind.annotation.RestController; import org.springframework.web.bind.annotation.*;
 
 @RestController 
 @RequestMapping ("/api/auth")
