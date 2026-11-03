@@ -1,37 +1,44 @@
 import React, { createContext, useState, useEffect } from 'react';
-import {loginUser, logoutUser, getCurrentUser} from '../services/authService.';
+import { loginUser, logoutUser } from '../services/AuthService.js';
 
 export const AuthContext = createContext();
 
-export const AuthProvider = ({childeren}) => {
-    const [user, setUser] = userState(null);
+export const AuthProvider = ({ children }) => {
+    const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const token = localStorage.getItem('token');
         const username = localStorage.getItem('username');
         const role = localStorage.getItem('role');
-        if (token && username) {
-            setUser({ token, username});
-        
-            setLoading(false);
-        }, []);
 
+        if (token && username) {
+            setUser({ token, username, role });
+        }
+
+        setLoading(false);
+    }, []);
 
     const login = async (username, password) => {
         const data = await loginUser(username, password);
 
-        seUser({username: data.username, role: data.role});
-        return data; }
+        setUser({
+            username: data.username,
+            role: data.role,
+            token: data.token,
+        });
 
-        const logout = () => {
-            logoutUser();
-            seUser(null);
-        };
+        return data;
+    };
 
-        return (
-            <AuthContext.Provider value={{ user, loading, login, logout }}>
-                {!loading && childeren}
-            </AuthContext.Provider>
-        );
-    }
+    const logout = () => {
+        logoutUser();
+        setUser(null);
+    };
+
+    return (
+        <AuthContext.Provider value={{ user, loading, login, logout }}>
+            {!loading && children}
+        </AuthContext.Provider>
+    );
+};
