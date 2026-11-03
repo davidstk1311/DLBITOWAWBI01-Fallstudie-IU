@@ -27,12 +27,12 @@ const Register = () => {
 
     return (
         <div style={{maxWidth: '400px', margin: '0 auto', padding: '20px'}}>
-            <h2>Konto registrieren</h2>
+                <h2 style= {{fontStyle: 'italic'}}>Konto erstellen</h2>
             {message && <p style={{color: 'green'}}>{message}</p>}
             {error && <p style={{color: 'red'}}>{error}</p>}
             <form onSubmit={handleSubmit}>
                 <div style={{marginBottom: '15px'}}>
-                    <label>Benutzername:</label>
+                    <label>Benutzername: </label>
                     <input
                         type="text"
                         value={username}
@@ -41,7 +41,7 @@ const Register = () => {
                     />
                 </div>
                 <div style={{marginBottom: '15px'}}>
-                    <label>Passwort:</label>
+                    <label>Passwort: </label>
                     <input
                         type="password"
                         value={password}
@@ -50,7 +50,7 @@ const Register = () => {
                     />
                 </div>
                 <div style={{marginBottom: '15px'}}>
-                    <label>Rolle:</label>
+                    <label>Rolle: </label>
                     <select value={role} onChange={(e) => setRole(e.target.value)}>
                         <option value="ROLE_USER">Benutzer</option>
                         <option value="ROLE_ADMIN">Administrator</option>
