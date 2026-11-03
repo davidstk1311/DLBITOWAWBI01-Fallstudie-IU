@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { registerUser } from '../services/authService.js';
 
 const Register = () => {
     const [username, setUsername] = useState('');
@@ -17,7 +17,7 @@ const Register = () => {
         setMessage('');
 
         try {
-             await registerUser(username, password, role);
+            await registerUser(username, password, role);
             setMessage('Registrierung erfolgreich! Bitte melden Sie sich an.');
             navigate('/login');
         } catch (err) {
@@ -62,3 +62,4 @@ const Register = () => {
     );
 };
 
+export default Register;

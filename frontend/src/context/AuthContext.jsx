@@ -1,7 +1,9 @@
-import React, { createContext, useState, useEffect } from 'react';
-import { loginUser, logoutUser } from '../services/AuthService.js';
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import { loginUser, logoutUser } from '../services/authService.js';
 
 export const AuthContext = createContext();
+
+export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);

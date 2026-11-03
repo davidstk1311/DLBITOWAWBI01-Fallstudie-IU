@@ -6,7 +6,7 @@ const Login = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
-    const {login} = useAuth();
+    const { login } = useAuth();
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
@@ -35,7 +35,7 @@ const Login = () => {
                         onChange={(e) => setUsername(e.target.value)}
                         required
                         style={{width: '100%', padding: '8px', boxSizing: 'border-box'}}
-                        />
+                    />
                 </div>
 
                 <div style={{marginBottom: '15px'}}>
@@ -51,9 +51,11 @@ const Login = () => {
 
                 <button type="submit" style={{width: '100%', padding: '10px', backgroundColor: '#007BFF', color: '#fff', border: 'none', cursor: 'pointer'}}>
                     Anmelden
-                    </button>
+                </button>
             </form>
         </div>
     );
-}
+};
+
+export default Login;
 
