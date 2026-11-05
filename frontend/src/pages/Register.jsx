@@ -5,7 +5,7 @@ import { registerUser } from '../services/authService.js';
 const Register = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [role, setRole] = useState('ROLE_USER');
+    const [role, setRole] = useState('employee_role');
     const [message, setMessage] = useState('');
     const [error, setError] = useState('');
 
@@ -52,8 +52,9 @@ const Register = () => {
                 <div style={{marginBottom: '15px'}}>
                     <label>Rolle: </label>
                     <select value={role} onChange={(e) => setRole(e.target.value)}>
-                        <option value="ROLE_USER">Benutzer</option>
-                        <option value="ROLE_ADMIN">Administrator</option>
+                        <option value="employee_role">Benutzer</option>
+                        <option value="admin_role">Administrator</option>
+                        <option value="project_manager_role">Projektmanager</option>
                     </select>
                 </div>
                 <button type="submit">Registrieren</button>

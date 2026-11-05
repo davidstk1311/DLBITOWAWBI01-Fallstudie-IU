@@ -34,7 +34,10 @@ public class AuthService {
         User user = new User();
         user.setUsername(registerRequest.getUsername());
         user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
-        user.setRole(Roles.employee_role);
+        Roles role = registerRequest.getRole() == null
+            ? Roles.employee_role
+            : registerRequest.getRole();
+        user.setRole(role);
 
         userRepository.save(user);
         return "User registriert.";
