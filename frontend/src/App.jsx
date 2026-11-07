@@ -4,6 +4,7 @@ import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute'; 
 import Login from './pages/Login'; 
 import Register from './pages/Register';
+import Projects from './pages/Projects';
 
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/projects" element={<Projects />} />
           <Route
             path="/projects"
             element={
