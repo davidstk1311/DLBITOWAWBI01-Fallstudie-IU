@@ -101,4 +101,4 @@ const Projects = () => {
     );
 };
 
-export default ProjectsPage;
+export default Projects;
