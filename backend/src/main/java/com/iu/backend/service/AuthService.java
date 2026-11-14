@@ -1,9 +1,11 @@
 package com.iu.backend.service;
 
+import java.util.List;
 import com.iu.backend.safety.JwtTokenProvider; 
 import com.iu.backend.dto.AuthResponse; 
 import com.iu.backend.dto.LoginRequest; 
-import com.iu.backend.dto.RegisterRequest; 
+import com.iu.backend.dto.RegisterRequest;
+import com.iu.backend.dto.UserDto;
 import com.iu.backend.model.Roles; 
 import com.iu.backend.model.User; 
 import com.iu.backend.repository.UserRepository; 
@@ -11,6 +13,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken; 
 import org.springframework.security.crypto.password.PasswordEncoder; 
 import org.springframework.stereotype.Service;
+
 
 @Service 
 public class AuthService {
@@ -51,5 +54,10 @@ public class AuthService {
         String token = jwtTokenProvider.generateToken(user.getUsername(), user.getRole().name());
         
         return new AuthResponse(token, user.getUsername(), user.getRole().name());
+    }
+
+    public List<UserDto> getAllUsers() {
+        return userRepository.findAll().stream().map(user -> new UserDto(user.getId(), user.getUsername(), user.getRole().name()))
+        .toList();
     }
 }

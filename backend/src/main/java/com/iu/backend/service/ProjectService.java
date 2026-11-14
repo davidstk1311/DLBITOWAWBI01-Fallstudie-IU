@@ -4,6 +4,8 @@ import com.iu.backend.dto.ProjectDto;
 import com.iu.backend.model.Project;
 import com.iu.backend.repository.ProjectRepository;
 import org.springframework.stereotype.Service;
+
+import java.lang.reflect.Array;
 import java.util.*;
 import org.springframework.security.core.context.SecurityContextHolder;
 import com.iu.backend.model.User;
@@ -26,12 +28,11 @@ public class ProjectService {
         projectdto.setId(project.getId());
         projectdto.setTitle(project.getTitle());
         projectdto.setDescription(project.getDescription());
-        projectdto.setArchived(false);
+        projectdto.setArchived(project.isArchived());
 
             if(project.getAssignedUsers() != null){
                 List<Long> ids = project.getAssignedUsers().stream().map(User::getId).toList();
-            } else {
-                new ArrayList<>();
+                projectdto.setAssignedUserIDs(ids);
             }
             return projectdto;
     
@@ -46,9 +47,16 @@ public class ProjectService {
      //Projekt erstellen
 
     public ProjectDto createProject(ProjectDto projectDto) {
+
         Project project = new Project();
         project.setTitle(projectDto.getTitle());
         project.setDescription(projectDto.getDescription());
+        project.setArchived(false);
+
+    if(projectDto.getAssignedUserIDs() != null && !projectDto.getAssignedUserIDs().isEmpty()){
+        List<User> users = userRepository.findAllById(projectDto.getAssignedUserIDs());
+        project.setAssignedUser(users);
+    }
         
         Project saved = projectRepository.save(project);
         return convertToDto(saved);
@@ -63,7 +71,7 @@ public class ProjectService {
     public void removeProject(long id) {
         projectRepository.deleteById(id);
     }
-
+     
     public List<ProjectDto> getProjectsForCurrentUser() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User currentUser = userRepository.findByUsername(username)
@@ -77,5 +85,18 @@ public class ProjectService {
             projects = projectRepository.findByAssignedUsers(currentUser);
         }
         return projects.stream().map(this::convertToDto).toList();
+    }
+
+    public ProjectDto changeArchive(Long id){
+        Project project = projectRepository.findById(id)
+        .orElseThrow(() -> new RuntimeException("Projekt nicht gefunden!"));
+        //Archivstatus umstellen
+        if(project.isArchived()) {project.setArchived(false);
+        } 
+            else{project.setArchived(true);
+            }
+
+        Project updateProject = projectRepository.save(project);
+        return convertToDto(updateProject);
     }
 }

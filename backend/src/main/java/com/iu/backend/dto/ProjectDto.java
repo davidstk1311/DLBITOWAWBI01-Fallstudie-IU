@@ -1,6 +1,6 @@
 package com.iu.backend.dto;
 import java.util.ArrayList;
-
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 //Lombok wird ausprobiert für die meisten getter und setter 
@@ -19,15 +19,15 @@ public class ProjectDto {
     @Setter
     private boolean isArchived;
 
-    private ArrayList<Long> assignedUserIDs = new ArrayList<>();
+    private List<Long> assignedUserIDs = new ArrayList<>();
     public ProjectDto() {
     }
 
-    public ArrayList<Long> getAssignedUserIDs() {
+    public List<Long> getAssignedUserIDs() {
         return assignedUserIDs;
     }
 
-    public void setAssignedUserIDs(ArrayList<Long> assignedUserIDs){
+    public void setAssignedUserIDs(List<Long> assignedUserIDs){
         this.assignedUserIDs = assignedUserIDs;
     }
     

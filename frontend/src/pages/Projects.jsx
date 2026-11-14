@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { getProjects, createProject, deleteProject } from '../services/projectService';
+import {getUsers} from '../services/userService';
+import { toggleArchiveProject } from '../services/projectService';
 
 const Projects = () => {
     const [projects, setProjects] = useState([]);
@@ -7,6 +9,9 @@ const Projects = () => {
     const [description, setDescription] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
+    const [users, setUsers] = useState([]);
+    const [selectedUserIds, setSelectedUserIds] = useState([]);
+    const [showArchived, setShowArchived] = useState(false);
 
     const userRole = localStorage.getItem('userRole');
     const isRoleManager = userRole === 'project_manager_role';
@@ -16,6 +21,11 @@ const Projects = () => {
             setLoading(true);
             const data = await getProjects();
             setProjects(data);
+
+            if(isProjectLeader){
+                const userData = await getUsers();
+                setUsers(userData);
+            }
         } catch (error) {
             setError('Failed to fetch projects');
         } finally {

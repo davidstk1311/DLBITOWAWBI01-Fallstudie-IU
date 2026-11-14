@@ -37,4 +37,9 @@ public class ProjectController {
         projectService.removeProject(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PostMapping("/{id}/archive")
+    public ResponseEntity<ProjectDto> changeArchive(@PathVariable Long id) {
+        return ResponseEntity.ok(projectService.changeArchive(id));
+    }
 }

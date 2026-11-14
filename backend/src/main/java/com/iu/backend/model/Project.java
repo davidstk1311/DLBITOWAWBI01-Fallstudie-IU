@@ -1,4 +1,5 @@
 package com.iu.backend.model;
+import java.lang.reflect.Array;
 import java.util.*;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
@@ -8,6 +9,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.*;
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "projects")
@@ -26,7 +28,7 @@ public class Project {
         joinColumns = @JoinColumn(name = "project_id"),
         inverseJoinColumns = @JoinColumn(name = "user_id")
     )
-    private List<User> assignedUsers;
+    private ArrayList<User> assignedUsers;
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Task> tasks;
@@ -54,7 +56,7 @@ public class Project {
         this.assignedUsers = assignedUsers;
     }
 
-    public List<User> getAssignedUsers(){
+    public ArrayList<User> getAssignedUsers(){
         return assignedUsers;
     }
 
