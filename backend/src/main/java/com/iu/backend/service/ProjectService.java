@@ -5,18 +5,36 @@ import com.iu.backend.model.Project;
 import com.iu.backend.repository.ProjectRepository;
 import org.springframework.stereotype.Service;
 import java.util.*;
+import org.springframework.security.core.context.SecurityContextHolder;
+import com.iu.backend.model.User;
+import com.iu.backend.repository.UserRepository;
 
 @Service
 public class ProjectService {
     private final ProjectRepository projectRepository;
+    private final UserRepository userRepository;
 
-    public ProjectService(ProjectRepository projectRepository) {
+
+    public ProjectService(ProjectRepository projectRepository, UserRepository userRepository) {
         this.projectRepository = projectRepository;
+        this.userRepository = userRepository;
     }
 
     private ProjectDto convertToDto(Project project) {
-        return new ProjectDto(project.getId(), project.getTitle(), project.getDescription(), project.isArchived());
+        ProjectDto projectdto = new ProjectDto();
 
+        projectdto.setId(project.getId());
+        projectdto.setTitle(project.getTitle());
+        projectdto.setDescription(project.getDescription());
+        projectdto.setArchived(false);
+
+            if(project.getAssignedUsers() != null){
+                List<Long> ids = project.getAssignedUsers().stream().map(User::getId).toList();
+            } else {
+                new ArrayList<>();
+            }
+            return projectdto;
+    
     }
     //Projekte abrufen
     public List<ProjectDto> getAllProjects() {
@@ -44,5 +62,20 @@ public class ProjectService {
     }
     public void removeProject(long id) {
         projectRepository.deleteById(id);
+    }
+
+    public List<ProjectDto> getProjectsForCurrentUser() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User currentUser = userRepository.findByUsername(username)
+            .orElseThrow(() -> new RuntimeException("Benutzer nicht gefunden"));
+        //Liste in Methode nochmal definiert
+        List<Project> projects;
+
+        if("ROLE_PROJECT_LEADER".equals(currentUser.getRole().name())){
+            projects = projectRepository.findAll();
+        } else {
+            projects = projectRepository.findByAssignedUsers(currentUser);
+        }
+        return projects.stream().map(this::convertToDto).toList();
     }
 }

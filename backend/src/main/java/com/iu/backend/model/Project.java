@@ -1,6 +1,13 @@
 package com.iu.backend.model;
 import java.util.*;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.Table;
+//ohne die zusätzlichen einzelnen imports läuft es nicht richtig
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.*;
+import java.util.ArrayList;
 
 @Entity
 @Table(name = "projects")
@@ -12,6 +19,15 @@ public class Project {
     private String title;
     private String description;
     private boolean isArchived;
+    //Tabelle für join zwischen projekt und user, damit mehrere user ein Projekt zugeordnet werden können
+    @ManyToMany
+    @JoinTable(
+        name = "project_assignees",
+        joinColumns = @JoinColumn(name = "project_id"),
+        inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    private List<User> assignedUsers;
+
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Task> tasks;
 
@@ -32,6 +48,14 @@ public class Project {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public void setAssignedUser(List<User> assignedUsers){
+        this.assignedUsers = assignedUsers;
+    }
+
+    public List<User> getAssignedUsers(){
+        return assignedUsers;
     }
 
     public String getTitle() {

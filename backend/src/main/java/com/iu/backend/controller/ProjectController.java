@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
+
 @RestController 
 @RequestMapping("/api/projects")
 public class ProjectController {
@@ -16,8 +17,8 @@ public class ProjectController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ProjectDto>> getAllProjects() {
-        return ResponseEntity.ok(projectService.getAllProjects());
+    public ResponseEntity<List<ProjectDto>> getAssignedProjects() {
+        return ResponseEntity.ok(projectService.getProjectsForCurrentUser());
     }
 
     @PostMapping
