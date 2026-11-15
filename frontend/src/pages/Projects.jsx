@@ -13,7 +13,7 @@ const Projects = () => {
     const [showArchived, setShowArchived] = useState(false);
 
     const userRole = localStorage.getItem('role');
-    const isRoleManager = userRole === 'project_manager_role';
+    const isProjectManager = userRole === 'project_manager_role';
 
     const fetchProjects = async () => {
         try {
@@ -21,7 +21,7 @@ const Projects = () => {
             const data = await getProjects();
             setProjects(data);
 
-            if(isRoleManager){
+            if(isProjectManager){
                 const userData = await getUsers();
                 setUsers(userData);
             }
@@ -72,8 +72,7 @@ const Projects = () => {
     
     return (
         <div style={{ padding: '15px', margin: '15px' }}>
-            <h3>Neues Projekt anlegen</h3>
-            <form onSubmit={handleCreateProject}>
+        {isProjectManager && (<form onSubmit={handleCreateProject}>
                 <div style={{ margin: '20px' }}>
                     <input
                         type='text'
@@ -83,7 +82,9 @@ const Projects = () => {
                         required
                     />
                 </div>
-            </form>
+            </form>)}
+            <h3>Neues Projekt anlegen</h3>
+            
             <div id="Projektbuton" style={{marginBottom: '15px', gap: '20'}}>
                 <h4>Projektfilter..</h4>
                 <button
@@ -115,13 +116,13 @@ const Projects = () => {
                                 <h4 style={{ font: 'italic' }}>{project.title}</h4>
                                 <p style={{margin: '10px'}}>{project.description}</p>
                             </div>
-                        {isRoleManager && 
+                        {isProjectManager && 
                         (
                             <button onClick={() => handleDeleteProject(project.id)} style={{color: 'red'}}>
                                 Löschen
                                 </button>
                         )}
-                        {isRoleManager &&
+                        {isProjectManager &&
                         (
                             <div id="Buttons">
                                 <button
