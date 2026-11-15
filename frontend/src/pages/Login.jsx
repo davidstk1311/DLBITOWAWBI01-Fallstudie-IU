@@ -15,6 +15,7 @@ const Login = () => {
 
         try {
             await login(username, password);
+            
             navigate('/projects');
         } catch (err) {
             setError('Login fehlgeschlagen.');

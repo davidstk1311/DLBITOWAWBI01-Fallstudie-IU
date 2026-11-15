@@ -2,6 +2,7 @@ package com.iu.backend.service;
 
 import com.iu.backend.dto.ProjectDto;
 import com.iu.backend.model.Project;
+import com.iu.backend.model.Roles;
 import com.iu.backend.repository.ProjectRepository;
 import org.springframework.stereotype.Service;
 
@@ -55,7 +56,7 @@ public class ProjectService {
 
     if(projectDto.getAssignedUserIDs() != null && !projectDto.getAssignedUserIDs().isEmpty()){
         List<User> users = userRepository.findAllById(projectDto.getAssignedUserIDs());
-        project.setAssignedUser(users);
+        project.setAssignedUsers(users);
     }
         
         Project saved = projectRepository.save(project);
@@ -79,10 +80,10 @@ public class ProjectService {
         //Liste in Methode nochmal definiert
         List<Project> projects;
 
-        if("ROLE_PROJECT_LEADER".equals(currentUser.getRole().name())){
+        if(currentUser.getRole() == Roles.project_manager_role){
             projects = projectRepository.findAll();
         } else {
-            projects = projectRepository.findByAssignedUsers(currentUser);
+            projects = projectRepository.findByAssignedUsersContaining(currentUser);
         }
         return projects.stream().map(this::convertToDto).toList();
     }

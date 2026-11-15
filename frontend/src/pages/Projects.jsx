@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { getProjects, createProject, deleteProject } from '../services/projectService';
+import { getProjects, createProject, deleteProject, changeProjectArchive } from '../services/projectService';
 import {getUsers} from '../services/userService';
-import { toggleArchiveProject } from '../services/projectService';
 
 const Projects = () => {
     const [projects, setProjects] = useState([]);
@@ -13,7 +12,7 @@ const Projects = () => {
     const [selectedUserIds, setSelectedUserIds] = useState([]);
     const [showArchived, setShowArchived] = useState(false);
 
-    const userRole = localStorage.getItem('userRole');
+    const userRole = localStorage.getItem('role');
     const isRoleManager = userRole === 'project_manager_role';
 
     const fetchProjects = async () => {
@@ -22,7 +21,7 @@ const Projects = () => {
             const data = await getProjects();
             setProjects(data);
 
-            if(isProjectLeader){
+            if(isRoleManager){
                 const userData = await getUsers();
                 setUsers(userData);
             }
@@ -32,6 +31,15 @@ const Projects = () => {
             setLoading(false);
         }
     };
+
+    const filterProjects = projects.filter(
+        (project) => project.isArchived == showArchived
+    )
+
+    const handleChangeArchive = async (id) => {
+            await changeProjectArchive(id);
+            fetchProjects();
+    }
 
     useEffect(() => {
         fetchProjects();
@@ -43,7 +51,7 @@ const Projects = () => {
         if (!title) return;
 
         try {
-            await createProject({ title, description });
+            await createProject({ title, description, assignedUserIds: selectedUserIds });
             setTitle('');
             setDescription('');
             fetchProjects();
@@ -61,8 +69,7 @@ const Projects = () => {
         }
     };
 
-
-
+    
     return (
         <div style={{ padding: '15px', margin: '15px' }}>
             <h3>Neues Projekt anlegen</h3>
@@ -77,6 +84,17 @@ const Projects = () => {
                     />
                 </div>
             </form>
+            <div id="Projektbuton" style={{marginBottom: '15px', gap: '20'}}>
+                <h4>Projektfilter..</h4>
+                <button
+                    type="button"
+                    onClick={() => setShowArchived(false)}
+                    >Aktive Projekte</button>
+                
+                <button
+                    type='button'
+                    onClick={() => setShowArchived(true)}>Archivierte Projekte</button>
+            </div>
             {loading ? (
                 <p>Lade Projekte...</p>
             ) : projects.length === 0 ? (
@@ -97,16 +115,47 @@ const Projects = () => {
                                 <h4 style={{ font: 'italic' }}>{project.title}</h4>
                                 <p style={{margin: '10px'}}>{project.description}</p>
                             </div>
-                        {isProjectLeader && 
+                        {isRoleManager && 
                         (
-                            <button onClick={handleDeleteProject(project.id)} style={{color: 'red'}}>
+                            <button onClick={() => handleDeleteProject(project.id)} style={{color: 'red'}}>
                                 Löschen
                                 </button>
+                        )}
+                        {isRoleManager &&
+                        (
+                            <div id="Buttons">
+                                <button
+                                    onClick={() => handleChangeArchive(project.id)}
+                                    style={{backgroundColor: 'black'}}
+                                    >{project.showArchived ? 'Wiederherstellen' : 'Archivieren'}</button>
+                                <button
+                                    onClick={() => handleDeleteProject(project.id)}
+                                    style={{backgroundColor: 'red'}}>Löschen</button>
+                            </div>
                         )}
                         </li>
                     ))}
                         </ul>
             )}
+            <div>
+                <label style={{marginBottom:'5px'}}>
+                    <strong>Mitarbeiter auswhölen für Projekt</strong>
+                    </label>
+                <select
+                    multiple
+                    value={selectedUserIds}
+                    onChange={(e) => {
+                        const options = Array.form(e.target.selectedOptions, opt => Number(opt.value));
+                        setSelectedUserIds(options);
+                    }}
+                    >
+                    {users.map((u) => (
+                        <option key={u.id} value={u.id}>
+                            {u.username}
+                        </option>
+                    ))}
+                    </select>
+            </div>
         </div>
     );
 };

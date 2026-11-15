@@ -28,7 +28,7 @@ public class Project {
         joinColumns = @JoinColumn(name = "project_id"),
         inverseJoinColumns = @JoinColumn(name = "user_id")
     )
-    private ArrayList<User> assignedUsers;
+    private List<User> assignedUsers;
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Task> tasks;
@@ -52,11 +52,11 @@ public class Project {
         this.id = id;
     }
 
-    public void setAssignedUser(List<User> assignedUsers){
+    public void setAssignedUsers(List<User> assignedUsers){
         this.assignedUsers = assignedUsers;
     }
 
-    public ArrayList<User> getAssignedUsers(){
+    public List<User> getAssignedUsers(){
         return assignedUsers;
     }
 

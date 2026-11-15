@@ -23,10 +23,10 @@ export const AuthProvider = ({ children }) => {
 
     const login = async (username, password) => {
         const data = await loginUser(username, password);
-
+        localStorage.setItem('role', data.role);
         setUser({
             username: data.username,
-            role: data.role,
+            role: localStorage.role,
             token: data.token,
         });
 

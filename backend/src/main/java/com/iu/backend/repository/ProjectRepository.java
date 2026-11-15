@@ -9,5 +9,5 @@ import com.iu.backend.model.User;
 
 @Repository 
 public interface ProjectRepository extends JpaRepository<Project, Long> {
-    List<Project> findByAssignedUsers(User currentUser);
+    List<Project> findByAssignedUsersContaining(User currentUser);
 }
